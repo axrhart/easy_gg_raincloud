@@ -7,9 +7,9 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The following is an example of creating raincloud plots without the need of sourcing custom geoms and the `raincloud_theme`. I came up with this as an easier way to teach raincloud plots to R beginners, as long as there is no built-in raincloud geom in `ggplot2`.
+The following is an example of creating raincloud plots without the need of sourcing custom geoms and the `raincloud_theme`. I came up with this as a way to teach raincloud plots to R beginners, as long as there is no built-in raincloud geom in `ggplot2`.
 
-If you are not familiar with raincloud plots have a look at the extensive [preprint](https://peerj.com/preprints/27137/) or read a condensed version at [Micah Allen's blog](https://micahallen.org/2018/03/15/introducing-raincloud-plots/?utm_campaign=News&utm_medium=Community&utm_source=DataCamp.com). As already mentioned, the approach there requires  sourcing the custom `geom_flat_violin` from [this R-script](https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R) and the theme provided by Allen et al., which is a handy approach for everyone who is a seasoned R analyst. However, I wanted similar results with code that is as comprehensible as possible, so this is what I came up with: 
+If you are not familiar with raincloud plots have a look at the extensive [preprint (Allen et al., 2018)](https://peerj.com/preprints/27137/) or read a condensed version at [Micah Allen's blog](https://micahallen.org/2018/03/15/introducing-raincloud-plots/?utm_campaign=News&utm_medium=Community&utm_source=DataCamp.com). As already mentioned, the approach there requires  sourcing the custom `geom_flat_violin` from [this R-script](https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R) and an optional theme provided by Allen et al., which is a handy approach for everyone who is a seasoned R analyst. However, I wanted similar results with code of which I think it might be more comprehensible for ggplot beginners, so this is what I came up with: 
 
 ```{r}
 library("ggplot2")
@@ -94,7 +94,7 @@ ggplot(data = mpg,
 
 ```
 
-Another drawback of this approach is that it cannot be used with a background grid and the clouds cannot have black outlines. Yet, it works perfectly with the `faced_wrap` from `ggplot2` and negative values.
+Another drawback of this approach is that it cannot be used with a background grid and the clouds cannot have black outlines. Yet, it works perfectly with the `facet_wrap` from `ggplot2` and negative values.
 
 ```{r, , fig.height=11}
 iris_exp <- iris
@@ -118,6 +118,7 @@ ggplot(data = iris_exp,
                alpha = 0.8,
                color = "black") +
   coord_flip(ylim = c(min(iris_exp$Petal.Length),max(iris_exp$Petal.Length))) +
+  theme_classic() + 
   theme(legend.position = "none") +
   facet_wrap(. ~ group, ncol = 1) +
   scale_color_brewer(palette = "Spectral") +
@@ -125,4 +126,6 @@ ggplot(data = iris_exp,
 
 ```
 
-Please feel free to use this code snippets in your own scripts and teaching.
+
+
+Please feel free to use this code snippets in your own scripts and teaching. If you want to make them more beautiful for slides I suggest using `ggsave()` with `type = "cairo-png"` as mentioned [here](https://www.r-bloggers.com/using-cairographics-with-ggsave/).
